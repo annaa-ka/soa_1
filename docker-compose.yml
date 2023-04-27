@@ -1,0 +1,101 @@
+version: "3"
+services:
+  server1:
+    image: annieka/server_image
+    hostname: NATIVE
+    expose:
+      - 9090/udp
+    environment:
+      - PORT=9090
+      - MULTICAST_PORT=10000
+      - MULTICAST_ADRESS=224.3.29.71
+      - TYPE=NATIVE
+
+  server2:
+    image: annieka/server_image
+    hostname: JSON
+    expose:
+      - 9091/udp
+    environment:
+      - PORT=9091
+      - MULTICAST_PORT=10000
+      - MULTICAST_ADRESS=224.3.29.71
+      - TYPE=JSON
+
+  server3:
+    image: annieka/server_image
+    hostname: XML
+    expose:
+      - 9092/udp
+    environment:
+      - PORT=9092
+      - MULTICAST_PORT=10000
+      - MULTICAST_ADRESS=224.3.29.71
+      - TYPE=XML
+
+  server4:
+    image: annieka/server_image
+    hostname: GOOGLE_BUFFER
+    expose:
+      - 9093/udp
+    environment:
+      - PORT=9093
+      - MULTICAST_PORT=10000
+      - MULTICAST_ADRESS=224.3.29.71
+      - TYPE=GOOGLE_BUFFER
+
+  server5:
+    image: annieka/server_image
+    hostname: APACHE
+    expose:
+      - 9094/udp
+    environment:
+      - PORT=9094
+      - MULTICAST_PORT=10000
+      - MULTICAST_ADRESS=224.3.29.71
+      - TYPE=APACHE
+
+  server6:
+    image: annieka/server_image
+    hostname: YAML
+    expose:
+      - 9095/udp
+    environment:
+      - PORT=9095
+      - MULTICAST_PORT=10000
+      - MULTICAST_ADRESS=224.3.29.71
+      - TYPE=YAML
+
+  server7:
+    image: annieka/server_image
+    hostname: MESSAGEPACK
+    expose:
+      - 9096/udp
+    environment:
+      - PORT=9096
+      - MULTICAST_PORT=10000
+      - MULTICAST_ADRESS=224.3.29.71
+      - TYPE=MESSAGEPACK
+
+  client:
+    image: annieka/client_image
+    expose:
+      - 2000/udp
+    ports:
+      - 2000:2000/udp
+    depends_on:
+      - server1
+      - server2
+      - server3
+      - server4
+      - server5
+      - server6
+      - server7
+    environment:
+      - PORT=2000
+      - MULTICAST_PORT=10000
+      - MULTICAST_ADRESS=224.3.29.71
+
+
+
+
