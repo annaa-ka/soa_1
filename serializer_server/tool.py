@@ -30,7 +30,7 @@ def native_format():
 pickle.dumps(data)
 '''
     ser_data_size = sys.getsizeof(str(data))
-    serialization_time = timeit.timeit(stmt = mycode, number = 10000, globals=globals())
+    serialization_time = timeit.timeit(stmt = mycode, number = 1000, globals=globals())
 
     setup_code = '''
 ser_data = pickle.dumps(data)
@@ -38,7 +38,7 @@ ser_data = pickle.dumps(data)
     mycode = '''
 pickle.loads(ser_data)
 '''
-    deserialization_time = timeit.timeit(setup=setup_code, stmt = mycode, number = 10000, globals=globals())
+    deserialization_time = timeit.timeit(setup=setup_code, stmt = mycode, number = 1000, globals=globals())
     return (serialization_time, deserialization_time, ser_data_size)
 
 def xml_format():
@@ -62,7 +62,7 @@ def json_format():
     mycode = '''
 jsonpickle.encode(data)
 '''
-    serialization_time = timeit.timeit(stmt = mycode, number = 10000, globals=globals())
+    serialization_time = timeit.timeit(stmt = mycode, number = 1000, globals=globals())
 
     ser_data_size = sys.getsizeof(json.dumps(data))
 
@@ -72,7 +72,7 @@ ser_data = jsonpickle.encode(data)
     mycode = '''
 jsonpickle.decode(ser_data)
 '''
-    deserialization_time = timeit.timeit(setup=setup_code, stmt = mycode, number = 10000, globals=globals())
+    deserialization_time = timeit.timeit(setup=setup_code, stmt = mycode, number = 1000, globals=globals())
     return (serialization_time, deserialization_time, ser_data_size)
 
 def create_proto_msg():
@@ -157,7 +157,7 @@ from __main__ import serialize, deserialize
     mycode = '''
 binary = serialize(schema, data)
     '''
-    serialization_time = timeit.timeit(setup=setup_code, stmt = mycode, number = 10000, globals=globals())
+    serialization_time = timeit.timeit(setup=setup_code, stmt = mycode, number = 1000, globals=globals())
     ser_data_size = sys.getsizeof(serialize(schema, data))
 
     setup_code = '''
@@ -167,7 +167,7 @@ binary = serialize(schema, data)
     mycode = '''
 data2 = deserialize(schema, binary)
 '''
-    deserialization_time = timeit.timeit(setup=setup_code, stmt = mycode, number = 10000, globals=globals())
+    deserialization_time = timeit.timeit(setup=setup_code, stmt = mycode, number = 1000, globals=globals())
     return (serialization_time, deserialization_time, ser_data_size)
 
 def yaml_test():
