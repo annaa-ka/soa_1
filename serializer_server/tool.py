@@ -14,6 +14,9 @@ from avro.io import DatumWriter, DatumReader
 import yaml
 import msgpack
 import sys
+import pickle
+from xml_marshaller import xml_marshaller
+import jsonpickle
 
 data = {"string": "string",
         "array" : [1, 2, 3],
@@ -24,50 +27,50 @@ data = {"string": "string",
 
 def native_format():
     mycode = '''
-str(data)
+pickle.dumps(data)
 '''
     ser_data_size = sys.getsizeof(str(data))
     serialization_time = timeit.timeit(stmt = mycode, number = 10000, globals=globals())
 
     setup_code = '''
-ser_data = str(data)
+ser_data = pickle.dumps(data)
 '''
     mycode = '''
-ast.literal_eval(ser_data)
+pickle.loads(ser_data)
 '''
     deserialization_time = timeit.timeit(setup=setup_code, stmt = mycode, number = 10000, globals=globals())
     return (serialization_time, deserialization_time, ser_data_size)
 
 def xml_format():
     mycode = '''
-dicttoxml(data)
+xml_marshaller.dumps(data)
 '''
     serialization_time = timeit.timeit(stmt = mycode, number = 500, globals=globals())
 
     ser_data_size = sys.getsizeof(dicttoxml(data))
 
     setup_code = '''
-ser_data = dicttoxml(data)
+ser_data = xml_marshaller.dumps(data)
 '''
     mycode = '''
-xmltodict.parse(ser_data)
+xml_marshaller.loads(ser_data)
 '''
     deserialization_time = timeit.timeit(setup=setup_code, stmt = mycode, number = 500, globals=globals())
     return (serialization_time, deserialization_time, ser_data_size)
 
 def json_format():
     mycode = '''
-json.dumps(data)
+jsonpickle.encode(data)
 '''
     serialization_time = timeit.timeit(stmt = mycode, number = 10000, globals=globals())
 
     ser_data_size = sys.getsizeof(json.dumps(data))
 
     setup_code = '''
-ser_data = json.dumps(data)
+ser_data = jsonpickle.encode(data)
 '''
     mycode = '''
-json.loads(ser_data)
+jsonpickle.decode(ser_data)
 '''
     deserialization_time = timeit.timeit(setup=setup_code, stmt = mycode, number = 10000, globals=globals())
     return (serialization_time, deserialization_time, ser_data_size)
